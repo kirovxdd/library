@@ -3,6 +3,8 @@
 namespace App\services\books;
 
 use App\Models\Book;
+use App\Models\BookTag;
+use App\Models\Tag;
 
 class Service
 {
@@ -29,6 +31,12 @@ class Service
             $book->tags()->sync($tags);
         } else {
             $book->update($data);
+            $tags= BookTag::all();
+            foreach ($tags as $tag){
+                if($tag['book_id'] == $book['id']){
+                    $tag->delete();
+                }
+            }
         }
     }
 }
